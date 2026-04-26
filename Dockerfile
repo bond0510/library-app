@@ -18,7 +18,7 @@ RUN pip install --no-cache-dir -r requirements.txt
 
 # Copy application code
 COPY app/ ./app/
-COPY schema.sql .
+
 
 # Expose FastAPI port
 EXPOSE 8000

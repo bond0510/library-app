@@ -5782,3 +5782,6 @@ AttributeError: 'dict' object has no attribute 'code'
 2026-04-25 22:44:53,074 | ERROR | efc78502-7d0c-4e00-b82e-a4f570e5d5f4 | app.core.exception_handlers | [efc78502-7d0c-4e00-b82e-a4f570e5d5f4] MEMBER_001 - Member already exists
 2026-04-25 22:49:32,609 | ERROR | edb1aca7-8654-4ab1-b6d1-36370b9fde5a | app.core.exception_handlers | [edb1aca7-8654-4ab1-b6d1-36370b9fde5a] MEMBER_001 - Member already exists
 2026-04-25 22:55:47,604 | INFO | beb9b5a5-8d10-4b23-b217-c0dd52c5b4e3 | app.controllers.borrow_controller | Fetching borrows skip=0, limit=5, search=, member=, book=, status=
+2026-04-26 13:55:19,996 | INFO | c5e61be5-89ba-42ab-9384-abf3c2162730 | app.services.book_service | Total books count is 7
+2026-04-26 13:55:19,997 | INFO | 1130e59a-8f2b-4e8d-b45f-09912893f1d2 | app.services.book_service | Total books count is 7
+2026-04-26 13:55:23,100 | INFO | b3e19da1-ab85-4e29-b47d-5e82fa8adc2a | app.controllers.borrow_controller | Fetching borrows skip=0, limit=5, search=, member=, book=, status=

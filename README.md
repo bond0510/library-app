@@ -123,3 +123,109 @@ app/
 *  Alembic migrations
 *  Cloud deployment (AWS / Kubernetes)
 
+## 🗄️ Database Design
+
+The application uses **PostgreSQL** with the following core entities:
+
+---
+
+###  1. Books Table
+
+Stores book inventory details.
+
+```sql
+CREATE TABLE books (
+    id SERIAL PRIMARY KEY,
+    title VARCHAR(255) NOT NULL,
+    author VARCHAR(255) NOT NULL,
+    isbn VARCHAR(50) UNIQUE,
+    total_copies INT NOT NULL,
+    available_copies INT NOT NULL,
+    
+);
+```
+
+---
+
+###  2. Members Table
+
+Stores library member information.
+
+```sql
+CREATE TABLE members (
+    id SERIAL PRIMARY KEY,
+    name VARCHAR(255) NOT NULL,
+    email VARCHAR(255) UNIQUE NOT NULL,
+    phone VARCHAR(20),
+    status VARCHAR(20) DEFAULT 'ACTIVE',
+    
+);
+```
+
+---
+
+###  3. Borrows Table
+
+Tracks book issue, return, and overdue lifecycle.
+
+```sql
+CREATE TABLE borrows (
+    id SERIAL PRIMARY KEY,
+    member_id INT NOT NULL,
+    book_id INT NOT NULL,
+    status VARCHAR(20) NOT NULL, -- ISSUED, RETURNED, OVERDUE
+    issued_at TIMESTAMP,
+    due_date TIMESTAMP,
+    returned_at TIMESTAMP,
+    fine_amount NUMERIC DEFAULT 0,
+
+    CONSTRAINT fk_member FOREIGN KEY (member_id) REFERENCES members(id),
+    CONSTRAINT fk_book FOREIGN KEY (book_id) REFERENCES books(id)
+);
+```
+
+---
+
+##  Entity Relationships
+
+```text
+Members (1) ------ (M) Borrows (M) ------ (1) Books
+```
+
+* A **Member** can borrow multiple books
+* A **Book** can be borrowed multiple times
+* `borrows` acts as a junction table with lifecycle tracking
+
+---
+
+##  Borrow Lifecycle
+
+```text
+ISSUED → OVERDUE → RETURNED
+```
+
+| Status   | Description                |
+| -------- | -------------------------- |
+| ISSUED   | Book is currently borrowed |
+| OVERDUE  | Due date exceeded          |
+| RETURNED | Book returned              |
+
+---
+
+##  Fine Calculation Logic
+
+* Fine = ₹10 per day after due date
+* Calculated during return
+
+---
+
+##  Indexing (Recommended)
+
+```sql
+CREATE INDEX idx_books_title ON books(title);
+CREATE INDEX idx_members_email ON members(email);
+CREATE INDEX idx_borrows_status ON borrows(status);
+```
+
+
+
